@@ -32,4 +32,12 @@ void make_hermite(struct Matrix *m, float x0, float y0, float x1, float y1,
 void make_bezier(struct Matrix *m, float x0, float y0, float x1, float y1,
 	float x2, float y2, float x3, float y3);
 
+void add_sphere(struct Matrix *m, float cx, float cy, float cz, float r, int step);
+struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step);
+
+void add_torus();
+struct Matrix* torus_points(float cx, float cy, float cz,
+	float r1, float r2, int step);
+
+
 #endif
