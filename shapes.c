@@ -185,7 +185,7 @@ void add_sphere(struct Matrix *m, float cx, float cy, float cz, float r, int ste
 }
 
 struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step) {
-	
+	return 0;
 }
 
 void add_torus(struct Matrix *m, float cx, float cy, float cz,
@@ -195,7 +195,7 @@ void add_torus(struct Matrix *m, float cx, float cy, float cz,
 
 struct Matrix* torus_points(float cx, float cy, float cz,
 		float r1, float r2, int step) {
-	
+	return 0;
 }
 
 
