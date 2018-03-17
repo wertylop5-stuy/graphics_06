@@ -9,7 +9,9 @@ void pixel_color(struct Pixel *p, unsigned char r,
 
 void plot_point(Frame grid, int x, int y, struct Pixel *p) {
 	//printf("Plotting %d, %d (%d, %d)\n", x, IMG_HEIGHT-1-y, x, y);
-	grid[IMG_HEIGHT-1-y][x] = *p;
+	if (x > -1 && y > -1) {
+		grid[IMG_HEIGHT-1-y][x] = *p;
+	}
 	//grid[y][x] = *p;	//if top left is (0, 0)
 }
 

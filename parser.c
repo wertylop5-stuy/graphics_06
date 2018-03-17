@@ -84,7 +84,7 @@ void parse_instructions(char *filename, struct Matrix *t,
 			fgets(line, sizeof(line), file);
 			sscanf(line, "%f %f %f %f",
 				      &x, &y, &z, &r);
-			add_sphere(e, x, y, z, r, 1);
+			add_sphere(e, x, y, z, r, 8);
 		}
 		else if (!strncmp(line, "box", strlen(line)-1)) {
 			float x, y, z, w, h, d;
@@ -94,7 +94,14 @@ void parse_instructions(char *filename, struct Matrix *t,
 			add_cube(e, x, y, z, w, h, d);
 		}
 		else if (!strncmp(line, "torus", strlen(line)-1)) {
-			
+			float x, y, z, r1, r2;
+			fgets(line, sizeof(line), file);
+			sscanf(line, "%f %f %f %f %f",
+				      &x, &y, &z, &r1, &r2);
+			add_torus(e, x, y, z, r1, r2, 10);
+		}
+		else if (!strncmp(line, "clear", strlen(line)-1)) {
+			e->back = 0;
 		}
 	}
 	

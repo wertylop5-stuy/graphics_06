@@ -39,6 +39,7 @@ void add_cube(struct Matrix *m, float x, float y, float z,
 void add_sphere(struct Matrix *m, float cx, float cy, float cz, float r, int step);
 struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step);
 
+//r1 is the circle radius, r2 is the distance from torus center to circle center
 void add_torus(struct Matrix *m, float cx, float cy, float cz,
 	float r1, float r2, int step);
 struct Matrix* torus_points(float cx, float cy, float cz,

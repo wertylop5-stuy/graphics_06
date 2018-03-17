@@ -210,18 +210,40 @@ void add_sphere(struct Matrix *m, float cx, float cy, float cz, float r, int ste
 			res->m[1][x],
 			res->m[2][x]
 		);
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x],
+			res->m[1][x]+1,
+			res->m[2][x]
+		);
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x]+1
+		);
 	}
+	free_matrix(res);
 }
 
 struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step) {
-	float t, t1;
+	int t, t1;
 	struct Matrix *m = new_matrix(4, 1);
-	for (t = 0; t <= 1; t+=step) {
-	for (t1 = 0; t1 <= 1; t1+=step) {
+	for (t = 0; t <= 360; t+=step) {
+	for (t1 = 0; t1 <= 180; t1+=step) {
 		push_point(m,
+			/*
 			r*cosf(t1*M_PI) + cx,
 			r*sinf(t1*M_PI)*cosf(t*2*M_PI) + cy,
 			r*sinf(t1*M_PI)*sinf(t*2*M_PI) + cz
+			*/
+			r*cosf(t1*(M_PI/180.0f)) + cx,
+			r*sinf(t1*(M_PI/180.0f))*cosf(t*(M_PI/180.0f)) + cy,
+			r*sinf(t1*(M_PI/180.0f))*sinf(t*(M_PI/180.0f)) + cz
 		);
 	}
 	}
@@ -230,12 +252,53 @@ struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step) {
 
 void add_torus(struct Matrix *m, float cx, float cy, float cz,
 		float r1, float r2, int step) {
-	
+	struct Matrix *res = torus_points(cx, cy, cz, r1, r2, step);
+	int x;
+	for (x = 0; x < res->back - 1; x++) {
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x]+1,
+			res->m[1][x],
+			res->m[2][x]
+		);
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x],
+			res->m[1][x]+1,
+			res->m[2][x]
+		);
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x]+1
+		);
+	}
+	free_matrix(res);
 }
 
 struct Matrix* torus_points(float cx, float cy, float cz,
 		float r1, float r2, int step) {
-	return 0;
+	int phi, theta;
+	struct Matrix *m = new_matrix(4, 1);
+	for (phi = 0; phi <= 360; phi+=step) {
+	for (theta = 0; theta <= 360; theta+=step) {
+		push_point(m,
+			cosf(phi*(M_PI/180.0f))*
+				(r1*cosf(theta*(M_PI/180.0f))+r2) + cx,
+			r1*sinf(theta*(M_PI/180.0f)) + cy,
+			-sinf(phi*(M_PI/180.0f))*
+				(r1*cosf(theta*(M_PI/180.0f))+r2) + cz
+		);
+	}
+	}
+	return m;
 }
 
 

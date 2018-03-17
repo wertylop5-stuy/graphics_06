@@ -2,7 +2,7 @@ OBJS = draw.o output.o matrix.o parser.o shapes.o main.o
 OUTPUT = picture.ppm
 EXEC = exec
 MATH_LIB = -lm
-SCRIPT=script
+SCRIPT=test
 
 all: $(OBJS)
 	gcc -o $(EXEC) $(OBJS) $(MATH_LIB)
