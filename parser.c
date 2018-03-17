@@ -63,7 +63,7 @@ void parse_instructions(char *filename, struct Matrix *t,
 			float cx, cy, cz, r;
 			fgets(line, sizeof(line), file);
 			sscanf(line, "%f %f %f %f", &cx, &cy, &cz, &r);
-			make_circle(e, cx, cy, cz, r);
+			make_circle(e, cx, cy, cz, r, 2*M_PI);
 		}
 		else if (!strncmp(line, "hermite", strlen(line)-1)) {
 			float x0, y0, x1, y1, rx0, ry0, rx1, ry1;
@@ -78,6 +78,23 @@ void parse_instructions(char *filename, struct Matrix *t,
 			sscanf(line, "%f %f %f %f %f %f %f %f",
 				&x0, &y0, &x1, &y1, &x2, &y2, &x3, &y3);
 			make_bezier(e, x0, y0, x1, y1, x2, y2, x3, y3);
+		}
+		else if (!strncmp(line, "sphere", strlen(line)-1)) {
+			float x, y, z, r;
+			fgets(line, sizeof(line), file);
+			sscanf(line, "%f %f %f %f",
+				      &x, &y, &z, &r);
+			add_sphere(e, x, y, z, r, 1);
+		}
+		else if (!strncmp(line, "box", strlen(line)-1)) {
+			float x, y, z, w, h, d;
+			fgets(line, sizeof(line), file);
+			sscanf(line, "%f %f %f %f %f %f",
+				      &x, &y, &z, &w, &h, &d);
+			add_cube(e, x, y, z, w, h, d);
+		}
+		else if (!strncmp(line, "torus", strlen(line)-1)) {
+			
 		}
 	}
 	

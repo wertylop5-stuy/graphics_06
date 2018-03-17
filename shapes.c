@@ -72,15 +72,16 @@ void parametric_exec(struct Matrix *m,
 	}
 }
 
-void make_circle(struct Matrix *m, float cx, float cy, float cz, float r) {
+void make_circle(struct Matrix *m, float cx, float cy, float cz,
+		float r, float deg) {
 	float t;
 	for (t = 0; t <= 1; t += STEP) {
 		push_edge(m,
-				r*cosf(2*M_PI*t) + cx,
-				r*sinf(2*M_PI*t) + cy,
+				r*cosf(deg*t) + cx,
+				r*sinf(deg*t) + cy,
 				cz,
-				r*cosf(2*M_PI*(t+STEP)) + cx,
-				r*sinf(2*M_PI*(t+STEP)) + cy,
+				r*cosf(deg*(t+STEP)) + cx,
+				r*sinf(deg*(t+STEP)) + cy,
 				cz);
 	}
 }
@@ -177,15 +178,54 @@ void make_bezier(struct Matrix *m, float x0, float y0, float x1, float y1,
 
 void add_cube(struct Matrix *m, float x, float y, float z,
 		float height, float width, float depth) {
+	float x2 = x + width;
+	float y2 = y - height;
+	float z2 = z - depth;
 	
+	push_edge(m, x , y , z , x , y2, z );
+	push_edge(m, x , y2, z , x2, y2, z );
+	push_edge(m, x2, y2, z , x2, y , z );
+	push_edge(m, x2, y , z , x , y , z );
+	
+	push_edge(m, x , y , z2, x , y2, z2);
+	push_edge(m, x , y2, z2, x2, y2, z2);
+	push_edge(m, x2, y2, z2, x2, y , z2);
+	push_edge(m, x2, y , z2, x , y , z2);
+	
+	push_edge(m, x , y , z , x , y , z2);
+	push_edge(m, x , y2, z , x , y2, z2);
+	push_edge(m, x2, y2, z , x2, y2, z2);
+	push_edge(m, x2, y , z , x2, y , z2);
 }
 
 void add_sphere(struct Matrix *m, float cx, float cy, float cz, float r, int step) {
-	
+	struct Matrix *res = sphere_points(cx, cy, cz, r, step);
+	int x;
+	for (x = 0; x < res->back - 1; x++) {
+		push_edge(m,
+			res->m[0][x],
+			res->m[1][x],
+			res->m[2][x],
+			res->m[0][x]+1,
+			res->m[1][x],
+			res->m[2][x]
+		);
+	}
 }
 
 struct Matrix* sphere_points(float cx, float cy, float cz, float r, int step) {
-	return 0;
+	float t, t1;
+	struct Matrix *m = new_matrix(4, 1);
+	for (t = 0; t <= 1; t+=step) {
+	for (t1 = 0; t1 <= 1; t1+=step) {
+		push_point(m,
+			r*cosf(t1*M_PI) + cx,
+			r*sinf(t1*M_PI)*cosf(t*2*M_PI) + cy,
+			r*sinf(t1*M_PI)*sinf(t*2*M_PI) + cz
+		);
+	}
+	}
+	return m;
 }
 
 void add_torus(struct Matrix *m, float cx, float cy, float cz,

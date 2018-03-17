@@ -26,7 +26,8 @@ void parametric_exec(struct Matrix *m,
 		float ax, float bx, float cx, float dx,
 		float ay, float by, float cy, float dy);
 
-void make_circle(struct Matrix *m, float cx, float cy, float cz, float r);
+//take in degrees for how much of the circle to draw
+void make_circle(struct Matrix *m, float cx, float cy, float cz, float r, float deg);
 void make_hermite(struct Matrix *m, float x0, float y0, float x1, float y1,
 	float rx0, float ry0, float rx1, float ry1);
 void make_bezier(struct Matrix *m, float x0, float y0, float x1, float y1,
