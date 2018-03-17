@@ -44,7 +44,7 @@ void parse_instructions(char *filename, struct Matrix *t,
 		else if (!strncmp(line, "display", strlen(line)-1)) {
 			memset(f, 0, sizeof(Frame));
 			struct Pixel p;
-			pixel_color(&p, 0, 255, 0);
+			pixel_color(&p, 255, 105, 180);
 			draw_lines(f, e, &p);
 			display(f);
 		}
